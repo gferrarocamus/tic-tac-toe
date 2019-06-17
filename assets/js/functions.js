@@ -3,9 +3,9 @@ const player = (name, marker) => {
 };
 
 const board = (() => {
-  let arr = [];
-  const updateArray = marker => {
-    const id = event.srcElement.id;
+  const arr = [];
+  const updateArray = (marker) => {
+    const id = event.target.id;
     arr[id] = marker;
   };
   return { arr, updateArray };
@@ -18,7 +18,7 @@ const displayController = (() => {
       div.textContent = marker;
     });
   };
-  const setMessage = msg => {
+  const setMessage = (msg) => {
     const messagesDiv = document.getElementById("messages");
     messagesDiv.textContent = msg;
   };
@@ -29,7 +29,7 @@ const gameLogic = (() => {
   let activeTurn = 0;
   let players = [];
 
-  const setPlayers = arr => {
+  const setPlayers = (arr) => {
     players = arr;
   };
   const winCombos = [
@@ -40,16 +40,8 @@ const gameLogic = (() => {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
   ];
-  const startGame = () => {
-    for (let i = 0; i < 9; i++) {
-      board.arr.push("");
-      const div = document.getElementById(i);
-      div.addEventListener("click", play, false);
-    }
-    displayController.setMessage(players[activeTurn].name + "'s turn!");
-  };
   const togglePlayer = () => {
     activeTurn = activeTurn === 0 ? 1 : 0;
   };
@@ -81,6 +73,14 @@ const gameLogic = (() => {
       togglePlayer();
       displayController.setMessage(players[activeTurn].name + "'s turn!");
     }
+  };
+  const startGame = () => {
+    for (let i = 0; i < 9; i+=1) {
+      board.arr.push('');
+      const div = document.getElementById(i);
+      div.addEventListener('click', play, false);
+    }
+    displayController.setMessage(players[activeTurn].name + "'s turn!");
   };
   const stopGame = msg => {
     displayController.setMessage(msg);
