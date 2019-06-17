@@ -1,61 +1,89 @@
 const player = (name, marker) => {
-  const makeMove = (cellId) => {
-    board.arr[cellId] = marker
-  }
-  return { name, marker, makeMove };
+  return { name, marker };
 };
-
-const player1 = player("Player 1", "X");
-const player2 = player("Player 2", "O");
 
 const board = (() => {
   let arr = [];
-  const initializeBoard = () => {
-    for (let i = 0; i < 9; i++) {
-      arr.push('');
-      const div = document.getElementById(i);
-      div.addEventListener('click', gameLogic.play, false);
-    }
-  };
   const updateArray = marker => {
     const id = event.srcElement.id;
     arr[id] = marker;
-  }
+  };
+  return { arr, updateArray };
+})();
+
+const displayController = (() => {
   const updateBoard = () => {
-    arr.forEach((marker, index) => {
+    board.arr.forEach((marker, index) => {
       const div = document.getElementById(index);
       div.textContent = marker;
     });
   };
-  return { arr, initializeBoard, updateBoard, updateArray };
+  const setMessage = (msg) => {
+    const messagesDiv = document.getElementById("messages");
+    messagesDiv.textContent = msg;
+  }
+  return { updateBoard, setMessage };
 })();
 
 const gameLogic = (() => {
   let activeTurn = 0;
-  let players = [player1, player2];
+  let players = [];
+
+  const setPlayers = (arr) => {
+    players = arr;
+  }
+  const winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+  const startGame = () => {
+    for (let i = 0; i < 9; i++) {
+      board.arr.push("");
+      const div = document.getElementById(i);
+      div.addEventListener("click", play, false);
+    }
+    displayController.setMessage(players[activeTurn].name + "'s turn!");
+  };
   const togglePlayer = () => {
     activeTurn = activeTurn === 0 ? 1 : 0;
   };
-  const play = (e) => {
-    board.updateArray(players[activeTurn].marker);
-    board.updateBoard();
-    togglePlayer();
-    e.target.removeEventListener('click', play, false);
+  const draw = () => {
+    return board.arr.indexOf("") === -1;
   };
-  return { play };
+  const win = () => {
+    for (let i = 0; i < winCombos.length; i++) {
+      let first = board.arr[winCombos[i][0]];
+      if (first !== "" && first === board.arr[winCombos[i][1]] && first === board.arr[winCombos[i][2]]) {
+        return true;
+      }
+    }
+    return false;
+  };
+  const play = e => {
+    board.updateArray(players[activeTurn].marker);
+    displayController.updateBoard();
+    e.target.removeEventListener("click", play, false);
+    if (win()) {
+      stopGame(players[activeTurn].name + " is the winner!");
+    } else if (draw()) {
+      stopGame("It's a draw!");
+    } else {
+      togglePlayer();
+      displayController.setMessage(players[activeTurn].name + "'s turn!");
+    }
+  };
+  const stopGame = (msg) => {
+    displayController.setMessage(msg);
+    const cells = document.getElementsByClassName('cell');
+    [...cells].forEach(element => {
+      element.removeEventListener("click", play, false);
+    });
+    const restartBtn = document.getElementById('restartBtn');
+    restartBtn.classList.toggle("hide");
+    restartBtn.onclick = () => { location.reload(); }
+  };
+  return { startGame, setPlayers };
 })();
 
 
-board.initializeBoard();
-// board.updateBoard();
-
-// const play = (() => {
-//   let moves = 0;
-//   while (moves < 9) {
-//     [player1, player2].forEach(player => {
-//       displayController.setCurrentPlayer(player);
-//       //Player makes move
-//       moves++;
-//     });
-//   }
-// })();
+const player1 = player("Player 1", "X");
+const player2 = player("Player 2", "O");
+gameLogic.setPlayers([player1, player2]);
+gameLogic.startGame();
