@@ -19,7 +19,7 @@ const displayController = (() => {
     });
   };
   const setMessage = (msg) => {
-    const messagesDiv = document.getElementById("messages");
+    const messagesDiv = document.getElementById('messages');
     messagesDiv.textContent = msg;
   };
   return { updateBoard, setMessage };
@@ -49,7 +49,7 @@ const gameLogic = (() => {
     return board.arr.indexOf('') === -1;
   };
   const win = () => {
-    for (let i = 0; i < winCombos.length; i+=1) {
+    for (let i = 0; i < winCombos.length; i += 1) {
       const first = board.arr[winCombos[i][0]];
       if (
         first !== ''
@@ -63,12 +63,12 @@ const gameLogic = (() => {
   };
   const stopGame = (msg) => {
     displayController.setMessage(msg);
-    const cells = document.getElementsByClassName("cell");
+    const cells = document.getElementsByClassName('cell');
     [...cells].forEach(element => {
       element.removeEventListener("click", play, false);
     });
-    const restartBtn = document.getElementById("restartBtn");
-    restartBtn.classList.toggle("hide");
+    const restartBtn = document.getElementById('restartBtn');
+    restartBtn.classList.toggle('hide');
     restartBtn.onclick = () => {
       location.reload();
     };
@@ -78,12 +78,12 @@ const gameLogic = (() => {
     displayController.updateBoard();
     e.target.removeEventListener('click', play, false);
     if (win()) {
-      stopGame(players[activeTurn].name + " is the winner!");
+      stopGame(`${players[activeTurn].name} is the winner!`;
     } else if (draw()) {
-      stopGame("It's a draw!");
+      stopGame('It\'s a draw!');
     } else {
       togglePlayer();
-      displayController.setMessage(players[activeTurn].name + "'s turn!");
+      displayController.setMessage(`${players[activeTurn].name}'s turn!`);
     }
   };
   const startGame = () => {
@@ -92,12 +92,12 @@ const gameLogic = (() => {
       const div = document.getElementById(i);
       div.addEventListener('click', play, false);
     }
-    displayController.setMessage(players[activeTurn].name + "'s turn!");
+    displayController.setMessage(`${players[activeTurn].name}'s turn!`);
   };
   return { startGame, setPlayers };
 })();
 
-const player1 = player("Player 1", "X");
-const player2 = player("Player 2", "O");
+const player1 = player('Player 1', 'X');
+const player2 = player('Player 2', 'O');
 gameLogic.setPlayers([player1, player2]);
 gameLogic.startGame();
