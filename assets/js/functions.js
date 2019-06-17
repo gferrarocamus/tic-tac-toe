@@ -46,25 +46,37 @@ const gameLogic = (() => {
     activeTurn = activeTurn === 0 ? 1 : 0;
   };
   const draw = () => {
-    return board.arr.indexOf("") === -1;
+    return board.arr.indexOf('') === -1;
   };
   const win = () => {
-    for (let i = 0; i < winCombos.length; i++) {
-      let first = board.arr[winCombos[i][0]];
+    for (let i = 0; i < winCombos.length; i+=1) {
+      const first = board.arr[winCombos[i][0]];
       if (
-        first !== "" &&
-        first === board.arr[winCombos[i][1]] &&
-        first === board.arr[winCombos[i][2]]
+        first !== ''
+        && first === board.arr[winCombos[i][1]]
+        && first === board.arr[winCombos[i][2]]
       ) {
         return true;
       }
     }
     return false;
   };
-  const play = e => {
+  const stopGame = (msg) => {
+    displayController.setMessage(msg);
+    const cells = document.getElementsByClassName("cell");
+    [...cells].forEach(element => {
+      element.removeEventListener("click", play, false);
+    });
+    const restartBtn = document.getElementById("restartBtn");
+    restartBtn.classList.toggle("hide");
+    restartBtn.onclick = () => {
+      location.reload();
+    };
+  };
+  const play = (e) => {
     board.updateArray(players[activeTurn].marker);
     displayController.updateBoard();
-    e.target.removeEventListener("click", play, false);
+    e.target.removeEventListener('click', play, false);
     if (win()) {
       stopGame(players[activeTurn].name + " is the winner!");
     } else if (draw()) {
@@ -81,18 +93,6 @@ const gameLogic = (() => {
       div.addEventListener('click', play, false);
     }
     displayController.setMessage(players[activeTurn].name + "'s turn!");
-  };
-  const stopGame = msg => {
-    displayController.setMessage(msg);
-    const cells = document.getElementsByClassName("cell");
-    [...cells].forEach(element => {
-      element.removeEventListener("click", play, false);
-    });
-    const restartBtn = document.getElementById("restartBtn");
-    restartBtn.classList.toggle("hide");
-    restartBtn.onclick = () => {
-      location.reload();
-    };
   };
   return { startGame, setPlayers };
 })();
