@@ -64,8 +64,13 @@ const gameLogic = (() => {
   const stopGame = (msg) => {
     displayController.setMessage(msg);
     const cells = document.getElementsByClassName('cell');
+<<<<<<< HEAD
     [...cells].forEach(element => {
       element.removeEventListener("click", play, false);
+=======
+    [...cells].forEach((element) => {
+      element.removeEventListener('click', play, false);
+>>>>>>> 83340e4fdfc98e8c1a1f4370e55233f34fa4a822
     });
     const restartBtn = document.getElementById('restartBtn');
     restartBtn.classList.toggle('hide');
@@ -78,7 +83,11 @@ const gameLogic = (() => {
     displayController.updateBoard();
     e.target.removeEventListener('click', play, false);
     if (win()) {
+<<<<<<< HEAD
       stopGame(`${players[activeTurn].name} is the winner!`;
+=======
+      stopGame(`${players[activeTurn].name} is the winner!`);
+>>>>>>> 83340e4fdfc98e8c1a1f4370e55233f34fa4a822
     } else if (draw()) {
       stopGame('It\'s a draw!');
     } else {
@@ -87,7 +96,7 @@ const gameLogic = (() => {
     }
   };
   const startGame = () => {
-    for (let i = 0; i < 9; i+=1) {
+    for (let i = 0; i < 9; i += 1) {
       board.arr.push('');
       const div = document.getElementById(i);
       div.addEventListener('click', play, false);
