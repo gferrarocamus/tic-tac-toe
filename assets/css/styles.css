@@ -24,6 +24,10 @@ h2 {
 }
 .cell {
   padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
 }
 .cell:nth-child(3n+2),
 .cell:nth-child(3n+1){
