@@ -1,0 +1,49 @@
+.container {
+  padding: 0 15px;
+}
+header {
+  text-align: center;
+  padding: 30px 15px 50px;
+}
+h1,
+h2 {
+  margin: 0;
+  padding: 0;
+}
+h2 {
+  text-transform: uppercase;
+  font-weight: 200;
+}
+#board {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 350px;
+  height: 350px;
+  margin: 0 auto 40px;
+}
+.cell {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+}
+.cell:nth-child(3n + 2),
+.cell:nth-child(3n + 1) {
+  border-right: 6px solid black;
+}
+.cell:nth-child(-n + 6) {
+  border-bottom: 6px solid black;
+}
+#messages {
+  margin: 0 auto 40px;
+  text-align: center;
+}
+.btn-container {
+  text-align: center;
+  margin: 0 auto;
+}
+.hide {
+  display: none;
+}
