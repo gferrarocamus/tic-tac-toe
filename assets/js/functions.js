@@ -17,7 +17,7 @@ const play = (e) => {
 };
 
 const board = (() => {
-  const arr = Array(9).fill('');
+  const arr = Array(9).fill("");
   const winCombos = [
     [0, 1, 2],
     [3, 4, 5],
@@ -29,15 +29,15 @@ const board = (() => {
     [2, 4, 6],
   ];
   const tie = () => {
-    return arr.indexOf('') === -1;
+    return arr.indexOf("") === -1;
   };
   const win = () => {
     for (let i = 0; i < winCombos.length; i += 1) {
       const first = arr[winCombos[i][0]];
       if (
-        first !== ''
-        && first === arr[winCombos[i][1]]
-        && first === arr[winCombos[i][2]]
+        first !== "" &&
+        first === arr[winCombos[i][1]] &&
+        first === arr[winCombos[i][2]]
       ) {
         return true;
       }
@@ -54,19 +54,21 @@ const displayController = (() => {
       div.textContent = marker;
     });
   };
-  const setMessage = (msg) => {
-    const messagesDiv = document.getElementById('messages');
+  const setMessage = msg => {
+    const messagesDiv = document.getElementById("messages");
     messagesDiv.textContent = msg;
   };
-  const stopGame = (win) => {
-    const msg = win ? `${gameLogic.currentPlayer().name} is the winner!` : 'It\'s a tie!';
-    setMessage(msg); 
-    const cells = document.getElementsByClassName('cell');
-    [...cells].forEach((element) => {
+  const stopGame = win => {
+    const msg = win
+      ? `${gameLogic.currentPlayer().name} is the winner!`
+      : "It's a tie!";
+    setMessage(msg);
+    const cells = document.getElementsByClassName("cell");
+    [...cells].forEach(element => {
       disableClick(element);
     });
-    const restartBtn = document.getElementById('restartBtn');
-    restartBtn.classList.toggle('hide');
+    const restartBtn = document.getElementById("restartBtn");
+    restartBtn.classList.toggle("hide");
     restartBtn.onclick = () => {
       location.reload();
     };
@@ -79,10 +81,10 @@ const displayController = (() => {
     setMessage(`${gameLogic.currentPlayer().name}'s turn!`);
   };
   const enableClick = (element) => {
-    element.addEventListener('click', play, false);
-  }
+    element.addEventListener("click", play, false);
+  };
   const disableClick = (element) => {
-    element.removeEventListener('click', play, false);
+    element.removeEventListener("click", play, false);
   };
   return { updateBoard, setMessage, stopGame, disableClick, startGame };
 })();
@@ -90,7 +92,7 @@ const displayController = (() => {
 const gameLogic = (() => {
   let activeTurn = 0;
   let players = [];
-  const setPlayers = (arr) => {
+  const setPlayers = arr => {
     players = arr;
   };
   const togglePlayer = () => {
@@ -98,7 +100,7 @@ const gameLogic = (() => {
   };
   const currentPlayer = () => {
     return players[activeTurn];
-  }
+  };
   const checkForWinner = () => {
     if (board.win()) {
       displayController.stopGame(true);
@@ -109,11 +111,11 @@ const gameLogic = (() => {
       return false;
     }
     return true;
-  }
+  };
   return { setPlayers, currentPlayer, checkForWinner };
 })();
 
-const player1 = player('Player 1', 'X');
-const player2 = player('Player 2', 'O');
+const player1 = player("Player 1", "X");
+const player2 = player("Player 2", "O");
 gameLogic.setPlayers([player1, player2]);
 displayController.startGame();
